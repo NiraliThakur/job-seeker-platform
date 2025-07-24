@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3 bg-primary text-white p-4" style="min-height: 100vh;">
+      <h4>Job Seeker</h4>
+      <hr>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" href="#">My Profile</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="#">Browse Jobs</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="#">My Applications</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="#">Settings</a></li>
+      </ul>
+    </div>
+    <div class="col-md-9 p-4">
+      <h2>Welcome, Job Seeker!</h2>
+      <p>Start your career journey by applying to the latest jobs.</p>
+      <hr>
+      <!-- Dashboard content -->
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Recommended Jobs</h5>
+          <p class="card-text">No new recommendations yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
