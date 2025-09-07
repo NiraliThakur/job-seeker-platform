@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block start %}
+
+<div class="container mt-4">
+    <h2>Edit My Profile</h2>
+    <hr>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Update Profile</button>
+        <a href="{% url 'jobseeker_profile' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

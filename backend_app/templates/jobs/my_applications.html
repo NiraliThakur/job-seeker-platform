@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block start %}
+
+<div class="container mt-4">
+  <h2 class="mb-4 text-primary fw-bold">My Applications</h2>
+
+  {% if applications %}
+    <div class="row">
+      {% for app in applications %}
+        <div class="col-md-6 mb-4">
+          <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body">
+              <h5 class="card-title text-dark fw-bold">
+                {{ app.job.title }}
+              </h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                {{ app.job.company }}
+              </h6>
+              <p class="mb-1"><strong>Status:</strong> 
+                <span class="
+                  {% if app.status == 'Shortlisted' %} text-success 
+                  {% elif app.status == 'not shortlisted' %} text-danger 
+                  {% else %} text-warning {% endif %}
+                ">
+                  {{ app.status }}
+                </span>
+              </p>
+              <p class="mb-2"><strong>Applied On:</strong> {{ app.applied_at|date:"M d, Y" }}</p>
+              
+              {% if app.cover_letter %}
+                <details class="mb-2">
+                  <summary class="fw-semibold">View Cover Letter</summary>
+                  <p class="mt-2">{{ app.cover_letter }}</p>
+                </details>
+              {% endif %}
+
+              <a href="{{ app.resume.url }}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill">
+                Download Resume
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info text-center rounded-4 shadow-sm">
+      You haven't applied to any jobs yet.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block start %}
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 bg-secondary text-white p-4" style="min-height: 100vh;">
+      <h4 class="fw-bold mb-4">Recruiter</h4>
+      <hr>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" href="{% url 'post_job' %}"><i class="fas fa-briefcase"></i> Post a Job</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href=""><i class="fas fa-file-alt"></i> View Applications</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{% url 'search_jobseekers' %}"><i class="fas fa-search"></i> Search Jobseekers</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 p-4">
+      <h2>Welcome, {{ user.username }}!</h2>
+      <p class="text-muted">Post jobs and manage your applications easily.</p>
+      <hr>
+
+      {% if jobs %}
+        <h4 class="mb-4">My Posted Jobs</h4>
+        <div class="row">
+          {% for job in jobs %}
+            <div class="col-md-6 mb-4">
+              <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title">{{ job.title }}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{{ job.company }}</h6>
+                  <p class="card-text">
+                    <strong>Location:</strong> {{ job.location }}<br>
+                    <strong>Salary:</strong> ₹{{ job.salary }}<br>
+                    <strong>Type:</strong> {{ job.job_type }}<br>
+                    <strong>Posted:</strong> {{ job.posted_at|date:"M d, Y" }}
+                  </p>
+                  <div class="d-flex justify-content-between">
+                    <a href="{% url 'view_applications' job.id %}" class="btn btn-sm btn-info">Applications</a>
+                    <a href="{% url 'edit_job' job.id %}" class="btn btn-sm btn-info">Edit</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="alert alert-info">You have not posted any jobs yet. Start by posting a job using the sidebar.</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

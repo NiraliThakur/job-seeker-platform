@@ -1,8 +1,11 @@
 from rest_framework.views import *
 from rest_framework import generics
+from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from .serializers import *
 from django.contrib.auth import get_user_model 
+from django.contrib.auth import login
+
 
 # Create your views here.
 
@@ -31,6 +34,10 @@ class LoginView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        user = authenticate(username=request.data['username'], password=request.data['password'])
+        
+        if user:
+            login(request, user)
         return Response(serializer.validated_data)
 
 

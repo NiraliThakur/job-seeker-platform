@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block start %}
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 bg-info text-white p-4" style="min-height: 100vh;">
+      <h4 class="fw-bold mb-4">Job Seeker</h4>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a class="nav-link text-white px-0" href="{% url 'jobseeker_profile' %}"><i class="bi bi-person-fill me-2"></i>My Profile</a></li>
+        <li class="nav-item mb-2"><a class="nav-link text-white px-0" href="{% url 'job_search' %}"><i class="bi bi-search me-2"></i>Search Jobs</a></li>
+        <li class="nav-item mb-2"><a class="nav-link text-white px-0" href="{% url 'my_applications' %}"><i class="bi bi-clipboard-check me-2"></i>My Applications</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 p-5 bg-light" style="min-height: 100vh;">
+      <div class="mb-4">
+        <h2 class="fw-bold text-info">🎯 Welcome, {{ request.user.username }}</h2>
+        <p class="text-muted">Manage your profile, search for jobs, and track your applications here.</p>
+        <hr>
+      </div>
+
+      <div class="container mt-4">
+    <h2 class="mb-4">Available Jobs</h2>
+    <div class="row">
+        {% for job in jobs %}
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ job.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ job.company }}</h6>
+                    <p class="card-text">
+                        <strong>Location:</strong> {{ job.location }} <br>
+                        <strong>Type:</strong> {{ job.job_type }} <br>
+                        <strong>Salary:</strong> {{ job.salary }} <br>
+                        <small class="text-muted">Posted on: {{ job.posted_at|date:"M d, Y" }}</small>
+                    </p>
+                    <a href="{% url 'job_details' job.id %}" class="btn btn-primary btn-sm">View Details</a>
+                    <a href="{% url 'apply_job' job.id %}" class="btn btn-success btn-sm">Apply</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No jobs available at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

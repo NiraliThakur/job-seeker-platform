@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block start %}
+
+<div class="container mt-4">
+  <h2>My Profile</h2>
+  <hr>
+
+  {% if profile %}
+    <div class="card shadow-sm p-3">
+      <h4>{{ profile.full_name }}</h4>
+      <p><b>Email:</b> {{ request.email }}</p>
+      <p><b>Phone:</b> {{ profile.phone }}</p>
+      <p><b>Location:</b> {{ profile.current_location }}</p>
+      <p><b>Skills:</b> {{ profile.skills }}</p>
+      <p><b>Experience:</b> {{ profile.experience }}</p>
+      <p><b>Education:</b> {{ profile.education }}</p>
+      {% if profile.resume %}
+        <p><a href="{{ profile.resume.url }}" target="_blank">Download Resume</a></p>
+      {% endif %}
+      <a href="{% url 'edit_jobseeker_profile' %}" class="btn btn-primary">Edit Profile</a>
+    </div>
+
+  {% else %}
+    <h5>Create Your Profile</h5>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-success">Save Profile</button>
+    </form>
+  {% endif %}
+</div>
+{% endblock %}

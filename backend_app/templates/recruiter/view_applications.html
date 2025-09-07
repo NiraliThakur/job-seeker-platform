@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block start %}
+
+<div class="container mt-4">
+  <h2 class="mb-4 text-primary">Applications for {{ job.title }}</h2>
+
+  {% if applications %}
+    <table class="table table-striped table-hover shadow-sm rounded-4">
+      <thead class="table-dark">
+        <tr>
+          <th>Applicant</th>
+          <th>Resume</th>
+          <th>Cover Letter</th>
+          <th>Applied On</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for app in applications %}
+        <tr>
+          <td>{{ app.applicant.username }}</td>
+          <td><a href="{{ app.resume.url }}" target="_blank">Download</a></td>
+          <td>
+            {% if app.cover_letter %}
+              <details><summary>View</summary><p>{{ app.cover_letter }}</p></details>
+            {% else %}
+              -
+            {% endif %}
+          </td>
+          <td>{{ app.applied_at|date:"M d, Y" }}</td>
+          <td>
+            <span class="
+              {% if app.status == 'shortlisted' %} text-success
+              {% elif app.status == 'not shortlisted' %} text-danger
+              {% else %} text-warning
+              {% endif %}
+            ">
+              {{ app.status }}
+            </span>
+          </td>
+          <td>
+            <form method="post" style="display:inline;">
+              {% csrf_token %}
+              <input type="hidden" name="app_id" value="{{ app.id }}">
+              <select name="status" class="form-select form-select-sm d-inline w-auto">
+                <option value="awaiting recruiter action" {% if app.status == 'awaiting recruiter action' %}selected{% endif %}>Awaiting</option>
+                <option value="shortlisted" {% if app.status == 'shortlisted' %}selected{% endif %}>Shortlisted</option>
+                <option value="not shortlisted" {% if app.status == 'not shortlisted' %}selected{% endif %}>Not Shortlisted</option>
+              </select>
+              <button type="submit" class="btn btn-sm btn-primary ms-1">Update</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No applications yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

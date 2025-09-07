@@ -9,20 +9,17 @@ body {
 }
 
 .hero h1 {
-    font-size: 3rem;
+    font-size: 48px;
 }
 
 .features i {
-    font-size: 2rem;
-    color: #0d6efd;
-}
+    font-size: 32px;
+    color: #3974cd;
 
-.testimonial {
-    background-color: #f8f9fa;
 }
 
 .cta {
-    background-color: #0d6efd;
+    background-color: #3974cd;
     color: white;
     padding: 60px 0;
 }
@@ -32,4 +29,8 @@ footer {
     color: white;
     padding: 20px 0;
     text-align: center;
+}
+
+.action a {
+    font-size: 16px;
 }

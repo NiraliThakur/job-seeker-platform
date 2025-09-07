@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block start %}
+
+<div class="container mt-4">
+  <h2>{{ profile.full_name }}</h2>
+  <p><strong>Email:</strong> {{ profile.user.email }}</p>
+  <p><strong>Phone:</strong> {{ profile.phone }}</p>
+  <p><strong>Location:</strong> {{ profile.current_location }}</p>
+  <p><strong>Skills:</strong> {{ profile.skills }}</p>
+  <p><strong>Experience:</strong> {{ profile.experience }}</p>
+  <p><strong>Education:</strong> {{ profile.education }}</p>
+
+  {% if profile.resume %}
+    <a href="{{ profile.resume.url }}" target="_blank" class="btn btn-primary">Download Resume</a>
+  {% endif %}
+</div>
+{% endblock %}

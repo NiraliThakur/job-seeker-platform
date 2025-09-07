@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block start %}
+
+<div class="container mt-4">
+    <h2>{{ job.title }}</h2>
+    <h5>{{ job.company }}</h5>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    <p><strong>Type:</strong> {{ job.job_type }}</p>
+    <p><strong>Salary:</strong> {{ job.salary }}</p>
+    <p><strong>Description:</strong> {{ job.description }}</p>
+    <p><strong>Requirements:</strong> {{ job.requirements }}</p>
+    <p><strong>Experience Required:</strong> {{ job.experience_required }}</p>
+    <p><strong>Skills Required:</strong> {{ job.skills_required }}</p>
+    <small class="text-muted">Posted on: {{ job.posted_at|date:"M d, Y" }}</small>
+
+    {% if already_applied %}
+        <p class="mt-3 text-success">✅ You have already applied for this job.</p>
+    {% else %}
+        <a href="{% url 'apply_job' job.id %}" class="btn btn-success mt-3">Apply Now</a>
+    {% endif %}
+</div>
+{% endblock %}

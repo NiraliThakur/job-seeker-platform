@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block start %}
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-9">
+      <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-header bg-primary text-white text-center">
+          <h4 class="mb-0">Post a New Job</h4>
+        </div>
+        <div class="card-body p-4">
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label for="title" class="form-label">Job Title</label>
+              <input type="text" id="title" name="title" class="form-control" placeholder="Enter job title" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="company" class="form-label">Company</label>
+              <input type="text" id="company" name="company" class="form-control" placeholder="Enter company name" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="job_type" class="form-label">Job Type</label>
+              <select id="job_type" name="job_type" class="form-select" required>
+                <option value="" disabled selected>-- Select Job Type --</option>
+                <option value="full-time">Full-Time</option>
+                <option value="part-time">Part-Time</option>
+                <option value="remote">Remote</option>
+                <option value="internship">Internship</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="location" class="form-label">Location</label>
+              <input type="text" id="location" name="location" class="form-control" placeholder="Job location" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="experience_required" class="form-label">Experience Required</label>
+              <input type="text" id="experience_required" name="experience_required" class="form-control" placeholder="E.g. 2+ years in Django" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="skills_required" class="form-label">Skills Required</label>
+              <input type="text" id="skills_required" name="skills_required" class="form-control" placeholder="E.g. Python, Django, MySQL" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="requirements" class="form-label">Requirements</label>
+              <textarea id="requirements" name="requirements" class="form-control" rows="3" placeholder="Any additional requirements" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Job Description</label>
+              <textarea id="description" name="description" class="form-control" rows="4" placeholder="Describe the job role and responsibilities" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="salary" class="form-label">Salary</label>
+              <input type="number" id="salary" name="salary" class="form-control" placeholder="E.g. 600000" step="0.01">
+              <small class="text-muted">Enter annual salary in numbers (₹). Example: 600000 = ₹6 LPA</small>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-success btn-lg">
+                <i class="bi bi-briefcase"></i> Post Job
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

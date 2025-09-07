@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block start %}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Search Jobs</h2>
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <input type="text" name="query" placeholder="Job title..." class="form-control" value="{{ query }}">
+        </div>
+        <div class="col-md-2">
+            <input type="text" name="location" placeholder="Location..." class="form-control" value="{{ location }}">
+        </div>
+        <div class="col-md-2">
+            <input type="text" name="company" placeholder="Company..." class="form-control" value="{{ company }}">
+        </div>
+        <div class="col-md-2">
+            <select name="job_type" class="form-select">
+                <option value="">All Types</option>
+                <option value="remote" {% if job_type == 'remote' %}selected{% endif %}>Remote</option>
+                <option value="full-time" {% if job_type == 'full-time' %}selected{% endif %}>Full-Time</option>
+                <option value="part-time" {% if job_type == 'part-time' %}selected{% endif %}>Part-Time</option>
+                <option value="internship" {% if job_type == 'internship' %}selected{% endif %}>Internship</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+    </form>
+
+    <!-- Job Results -->
+    {% if jobs %}
+        <div class="row row-cols-1 g-4">
+            {% for job in jobs %}
+            <div class="col">
+                <div class="card shadow-sm border rounded-4 p-3">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h5 class="fw-bold">{{ job.title }}</h5>
+                            <p class="text-muted mb-1">{{ job.company_name }} — {{ job.location }}</p>
+                            <p class="small">{{ job.job_type|title }}</p>
+                        </div>
+                        <div>
+                            {% if job.id in applied_jobs %}
+                                <button class="btn btn-success btn-sm" disabled>Applied</button>
+                            {% else %}
+                                <form method="post" action="{% url 'apply_job' job.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">Apply Now</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <a href="{% url 'job_detail' job.id %}" class="mt-2 d-inline-block">View Details</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-4">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    {% if jobs.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ jobs.previous_page_number }}&query={{ query }}&location={{ location }}&company={{ company }}&job_type={{ job_type }}">Previous</a>
+                        </li>
+                    {% endif %}
+                    <li class="page-item active"><span class="page-link">{{ jobs.number }}</span></li>
+                    {% if jobs.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ jobs.next_page_number }}&query={{ query }}&location={{ location }}&company={{ company }}&job_type={{ job_type }}">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+
+    {% else %}
+        <p class="text-muted text-center">No jobs found for your filters.</p>
+    {% endif %}
+</div>
+{% endblock %}
