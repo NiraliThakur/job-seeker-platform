@@ -27,7 +27,10 @@ SECRET_KEY = 'django-insecure-*z5apt3(@#6m_ps45wbn_p$mqhoq*!($dk%c8!^&rq+!9np&_t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 
+    "job-seeker-platform-j10g.onrender.com",  
+    "localhost",
+    "127.0.0.1",]
 
 
 # Application definition
