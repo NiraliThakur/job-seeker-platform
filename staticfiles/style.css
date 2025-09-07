@@ -1,0 +1,36 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.hero {
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    color: white;
+    padding: 100px 0;
+}
+
+.hero h1 {
+    font-size: 48px;
+}
+
+.features i {
+    font-size: 32px;
+    color: #3974cd;
+
+}
+
+.cta {
+    background-color: #3974cd;
+    color: white;
+    padding: 60px 0;
+}
+
+footer {
+    background-color: #212529;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.action a {
+    font-size: 16px;
+}
