@@ -24,7 +24,11 @@ class RegisterView(generics.GenericAPIView):
         return Response({
             'refresh': str(refresh),
             'access': str(refresh.access_token),
-            'role': user.role
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "role": user.role
+            }
         })
 
 class LoginView(generics.GenericAPIView):
@@ -36,8 +40,10 @@ class LoginView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = authenticate(username=request.data['username'], password=request.data['password'])
         
-        if user:
-            login(request, user)
+        if not user:
+            return Response({"error": "Invalid username or password"}, status=400)
+
+        login(request, user) 
         return Response(serializer.validated_data)
 
 

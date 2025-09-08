@@ -1,73 +1,78 @@
 {% extends 'base.html' %}
 
 {% block start %}
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
-    <div class="card shadow-lg p-4 rounded-4" style="width: 100%; max-width: 450px;">
-        <h3 class="text-center mb-4 text-primary fw-bold">Welcome Back</h3>
-        
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            {% endfor %}
-        {% endif %}
 
-        <form method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="username" class="form-label fw-semibold">Username</label>
-                <input type="text" class="form-control rounded-3" id="username" name="username" placeholder="Enter your username" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="password" class="form-label fw-semibold">Password</label>
-                <input type="password" class="form-control rounded-3" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100 rounded-pill">Log In</button>
-        </form>
-
-        <p class="text-center mt-3">Don't have an account? <a href="{% url 'register_page' %}" class="text-decoration-none text-primary fw-semibold">Sign Up</a></p>
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card shadow-lg p-4 rounded-4" style="width: 28rem;">
+    <div class="text-center mb-4">
+      <h3 class="fw-bold text-primary">Welcome Back</h3>
+      <p class="text-muted">Login to continue to your dashboard</p>
     </div>
+    <form id="loginForm">
+      <div class="mb-3">
+        <label for="username" class="form-label fw-semibold">Username</label>
+        <input type="text" class="form-control rounded-3" id="username" placeholder="Enter your username" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label fw-semibold">Password</label>
+        <input type="password" class="form-control rounded-3" id="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100 rounded-3 fw-semibold">Login</button>
+    </form>
+    <div class="text-center mt-3">
+      <p class="mb-1">Don't have an account? 
+        <a href="{% url 'register_page' %}" class="text-decoration-none fw-semibold">Register</a>
+      </p>
+    </div>
+  </div>
+</div><div class="container mt-5">
+  <h2>Login</h2>
+  <form id="loginForm">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" id="username" required>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
 </div>
 
 <script>
-document.querySelector("form").addEventListener("submit", async function (e) {
-    e.preventDefault();
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
-    const response = await fetch("/api/login/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": "{{ csrf_token }}"
-        },
-        body: JSON.stringify({ username, password })
-    });
+  const response = await fetch("/api/login/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, password }),
+  });
 
-    const data = await response.json();
+  const data = await response.json();
+  if (response.ok) {
+    alert("Login successful!");
 
-    if (response.ok) {
-        const role = data.user.role;
+    // store tokens in localStorage
+    localStorage.setItem("access", data.access);
+    localStorage.setItem("refresh", data.refresh);
+    localStorage.setItem("role", data.user.role);
 
-        localStorage.setItem("access", data.access);
-        localStorage.setItem("refresh", data.refresh);
-
-        if (role === "jobseeker") {
-            window.location.href = "/jobseeker/dashboard/";
-        } else if (role === "recruiter") {
-            window.location.href = "/recruiter/dashboard/";
-        } else {
-            alert("Invalid user role.");
-        }
+    // redirect based on role
+    if (data.user.role === "jobseeker") {
+      window.location.href = "{% url 'jobseeker_dashboard' %}";
     } else {
-        alert(data.detail || "Login failed. Please check your credentials.");
+      window.location.href = "{% url 'recruiter_dashboard' %}";
     }
+  } else {
+    alert("Error: " + JSON.stringify(data));
+  }
 });
 </script>
-
 {% endblock %}
